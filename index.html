@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sprint">
+<meta name="theme-color" content="#14243B">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
+<title>The 12-Day Sprint — Aug 20–31 · Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14243B; --navy-deep:#0C1728; --gold:#C9962E; --gold-soft:#E8C877;
+    --paper:#FBF8F2; --ink:#22293A; --muted:#6B7280; --line:#E3DCCB; --green:#3E7C4F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.55;}
+  .wrap{max-width:860px;margin:0 auto;padding:32px 20px 64px;}
+
+  header{background:var(--navy);color:#fff;border-radius:16px;padding:32px 28px 26px;position:relative;overflow:hidden;margin-bottom:16px;}
+  header::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(420px 240px at 88% -10%, rgba(201,150,46,.28), transparent 65%),
+    radial-gradient(360px 260px at -8% 110%, rgba(201,150,46,.14), transparent 60%);pointer-events:none;}
+  .eyebrow{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 110;font-weight:700;letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--gold-soft);margin-bottom:8px;}
+  h1{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 118;font-weight:900;font-size:clamp(26px,5vw,40px);line-height:1.05;letter-spacing:-.01em;}
+  .hero-sub{margin-top:10px;color:#C7D0DE;max-width:56ch;font-size:13.5px;position:relative;}
+
+  /* ---------- KPI dashboard ---------- */
+  .dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:22px 0 4px;position:relative;}
+  .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(232,200,119,.35);border-radius:12px;padding:14px 16px 12px;}
+  .kpi .lbl{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 112;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--gold-soft);margin-bottom:6px;}
+  .kpi .val{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 120;font-weight:900;font-size:24px;color:#fff;line-height:1;}
+  .kpi .val small{font-size:12px;font-weight:600;color:#C7D0DE;}
+  .kpi .sub{font-size:11px;color:#9FB0C6;margin-top:4px;min-height:14px;}
+  .bar{height:6px;border-radius:99px;background:rgba(255,255,255,.14);margin-top:9px;overflow:hidden;}
+  .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));border-radius:99px;transition:width .45s ease;}
+  .bar.green i{background:linear-gradient(90deg,#3E7C4F,#6FBF83);}
+
+  .storenote{font-size:11px;color:#8FA0B8;margin-top:14px;position:relative;}
+
+  .rhythm{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:24px 0 36px;}
+  .slot{background:#fff;padding:13px 15px;}
+  .slot b{display:block;font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 110;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;font-weight:800;}
+  .slot span{font-size:12.5px;color:var(--muted);}
+
+  h2{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 115;font-weight:900;font-size:20px;color:var(--navy);margin:34px 0 6px;}
+  .section-note{color:var(--muted);font-size:13px;margin-bottom:18px;max-width:64ch;}
+
+  .day{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px 14px;margin-bottom:14px;break-inside:avoid;transition:box-shadow .2s;}
+  .day.done{box-shadow:0 0 0 2px var(--gold) inset;}
+  .day.daughter{border-left:5px solid var(--gold);}
+  .day-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .datebox{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 120;font-weight:900;font-size:17px;color:var(--navy);}
+  .dow{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .tag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:3px 10px;}
+  .rows{display:grid;grid-template-columns:86px 1fr;gap:4px 14px;}
+  .rows dt{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:2px;}
+  .rows dd{font-size:13.5px;}
+  .rows dd.meal{color:var(--navy);font-weight:600;}
+  .rows dd .kcal{color:var(--muted);font-weight:400;font-size:12px;}
+
+  /* interactive tick strip */
+  .ticks{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center;border-top:1px dashed var(--line);margin-top:14px;padding-top:12px;}
+  .tick{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;padding:3px 4px;border-radius:8px;}
+  .tick:hover{background:#F4EEDF;}
+  .tick input{position:absolute;opacity:0;pointer-events:none;}
+  .tick i{width:17px;height:17px;border:1.8px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none;font-style:normal;font-size:11px;color:#fff;transition:background .15s;}
+  .tick input:checked + i{background:var(--gold);}
+  .tick input:checked + i::after{content:"✓";font-weight:900;}
+  .tick input:focus-visible + i{outline:2px solid var(--navy);outline-offset:2px;}
+  .tick.special i{border-color:var(--green);}
+  .tick.special input:checked + i{background:var(--green);}
+  .weightbox{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--navy);}
+  .weightbox input{width:74px;padding:5px 8px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;color:var(--navy);background:#FDFCF9;}
+  .weightbox input:focus{outline:none;border-color:var(--gold);}
+
+  /* ---------- Pull log ---------- */
+  .pulls{border-top:1px dashed var(--line);margin-top:12px;padding-top:10px;}
+  .pullbtn{background:none;border:1.5px dashed var(--gold);color:var(--gold);border-radius:999px;padding:5px 14px;font:700 11.5px 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;}
+  .pullbtn:hover{background:#FBF4E3;}
+  .pull-entry{background:#FBF8F0;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;}
+  .pull-entry input[type="time"]{border:1.5px solid var(--line);border-radius:7px;padding:3px 6px;font:600 12px 'Inter',sans-serif;color:var(--navy);background:#fff;}
+  .idots{display:flex;gap:4px;align-items:center;}
+  .idots small{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.06em;margin-right:2px;}
+  .idot{width:15px;height:15px;border-radius:50%;border:1.6px solid var(--gold);cursor:pointer;background:none;padding:0;}
+  .idot.on{background:var(--gold);}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;}
+  .chip{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:3px 10px;font:600 11px 'Inter',sans-serif;cursor:pointer;}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .pull-entry input.pnote{flex:1;min-width:140px;border:1.5px solid var(--line);border-radius:7px;padding:4px 8px;font:500 12px 'Inter',sans-serif;background:#fff;}
+  .pdel{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;padding:2px 6px;}
+  .pdel:hover{color:#B4432F;}
+
+  /* ---------- Trigger map ---------- */
+  .map{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-top:34px;}
+  .map h3{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 115;font-weight:900;font-size:18px;color:var(--navy);margin-bottom:4px;}
+  .map .mnote{font-size:12.5px;color:var(--muted);margin-bottom:16px;}
+  .mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;}
+  .mcol h4{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-family:'Archivo',sans-serif;}
+  .mrow{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:12.5px;}
+  .mrow .mlbl{width:118px;flex:none;color:var(--ink);font-weight:600;font-size:12px;}
+  .mrow .mbar{flex:1;height:9px;background:#F1EBDC;border-radius:99px;overflow:hidden;}
+  .mrow .mbar i{display:block;height:100%;background:linear-gradient(90deg,var(--navy),#2E4A73);border-radius:99px;transition:width .4s;}
+  .mrow .mn{width:22px;text-align:right;font-weight:700;color:var(--navy);font-size:12px;}
+  .mstats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px;}
+  .mstat b{display:block;font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 120;font-weight:900;font-size:22px;color:var(--navy);}
+  .mstat span{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.04em;}
+  .mempty{font-size:13px;color:var(--muted);font-style:italic;}
+
+  .rules{background:var(--navy);color:#D6DEEA;border-radius:14px;padding:24px 26px;margin-top:34px;font-size:13.5px;}
+  .rules h3{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 115;color:var(--gold-soft);font-size:14px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px;font-weight:800;}
+  .rules p{margin-bottom:9px;}
+  .rules p:last-child{margin-bottom:0;}
+  .rules strong{color:#fff;}
+
+  @media (display-mode: standalone){
+    .wrap{padding-top:calc(env(safe-area-inset-top) + 16px);padding-bottom:calc(env(safe-area-inset-bottom) + 48px);}
+  }
+  @media (max-width:480px){
+    /* 16px inputs stop iOS Safari from zooming the page on focus */
+    .weightbox input,.pull-entry input[type="time"],.pull-entry input.pnote{font-size:16px;}
+    .rows{grid-template-columns:74px 1fr;}
+  }
+
+  @media print{
+    body{background:#fff;font-size:12px;}
+    .wrap{max-width:100%;padding:0;}
+    header{border-radius:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .day{page-break-inside:avoid;}
+    .storenote{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Aug 20 – 31 · Kuwait · Leave Sprint</div>
+  <h1>Twelve days. Zero drinks. One system.</h1>
+  <p class="hero-sub">Streak started Wed 19 Aug (day 1, already banked). Tick each day as you close it — the dashboard below scores the OKR live.</p>
+
+  <div class="dash">
+    <div class="kpi">
+      <div class="lbl">KR1 · Sober streak</div>
+      <div class="val" id="kSober">1 <small>/ 13 days</small></div>
+      <div class="sub" id="kSoberSub">Day 1 (19 Aug) banked</div>
+      <div class="bar green"><i id="bSober"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">KR2 · Weight</div>
+      <div class="val" id="kWeight">92.5 <small>kg</small></div>
+      <div class="sub" id="kWeightSub">Start 92.5 → target 82.5 · ≥87.5 = win</div>
+      <div class="bar"><i id="bWeight"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">KR3 · Inputs</div>
+      <div class="val" id="kInputs">0 <small>sessions</small></div>
+      <div class="sub" id="kInputsSub">OMAD held 0/12 · target 10+ sessions</div>
+      <div class="bar"><i id="bInputs"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">KR4 · Daughter days</div>
+      <div class="val" id="kDaughter">0 <small>/ 4</small></div>
+      <div class="sub">Gold-edged cards — tick “Outing done”</div>
+      <div class="bar"><i id="bDaughter"></i></div>
+    </div>
+  </div>
+  <p class="storenote" id="storeNote">Everything saves automatically on this device. Once hosted and added to your iPhone home screen, it opens full-screen like an app — log pulls in the moment, tick the day each night.</p>
+</header>
+
+<div class="rhythm">
+  <div class="slot"><b>05:30–06:30</b><span>Fasted walk / jog / gym cardio — the only outdoor window</span></div>
+  <div class="slot"><b>07:00–10:00</b><span>Deep work block, fasted — the craving blocker</span></div>
+  <div class="slot"><b>10:00–11:00</b><span>The OMAD meal — early lunch, protein first, salt it properly</span></div>
+  <div class="slot"><b>Midday</b><span>Rest · errands · 20 min guitar (one cover by day 12)</span></div>
+  <div class="slot"><b>16:00–18:00</b><span>Resistance session — protects muscle on the deficit</span></div>
+  <div class="slot"><b>Evening</b><span>Fully fasted + pre-planned by noon. No open evenings.</span></div>
+</div>
+
+<h2>Day by day</h2>
+<p class="section-note">Kuwait weekdays, Fri–Sat weekends. Gold-edged cards are daughter days — three now land on weekends. Every meal is light keto (zero / near-zero carb), ~850–1,100 kcal, eaten as an early lunch 10–11am. Water 3L+ daily, electrolytes non-negotiable in this heat. Tick at the end of each day and enter the morning scale reading.</p>
+
+<!-- Day cards are generated by JS below to keep ticks wired to storage -->
+<div id="days"></div>
+
+<div class="map" id="triggerMap">
+  <h3>Trigger map</h3>
+  <p class="mnote">Built from your pull log. Log every craving in the moment — 20 seconds, on the card of that day. By day 13 this is your design brief for September.</p>
+  <div class="mstats">
+    <div class="mstat"><b id="mTotal">0</b><span>pulls logged</span></div>
+    <div class="mstat"><b id="mAvg">–</b><span>avg intensity</span></div>
+    <div class="mstat"><b id="mClean">0</b><span>zero-pull days</span></div>
+    <div class="mstat"><b id="mRode">–</b><span>ridden out (100%)</span></div>
+  </div>
+  <div class="mgrid">
+    <div class="mcol"><h4>By trigger</h4><div id="mTrig"><p class="mempty">Nothing logged yet.</p></div></div>
+    <div class="mcol"><h4>By time of day</h4><div id="mTime"><p class="mempty">Nothing logged yet.</p></div></div>
+  </div>
+</div>
+
+<div class="rules">
+  <h3>Standing rules</h3>
+  <p><strong>Electrolytes daily:</strong> salt food properly, magnesium at night, 3L+ water. Fasting in Kuwaiti August without this is how sprints end early.</p>
+  <p><strong>Craving protocol:</strong> cravings crest and pass in ~15 minutes. Sparkling water with lime, leave the room, message someone, or pick up the guitar. Never negotiate at hour zero of an unplanned evening — that's why evenings are set by noon.</p>
+  <p><strong>If you slip on food, you have not slipped on sobriety.</strong> The KRs are independent. A bad meal is a data point; the streak stays intact and is the one thing that never resets by choice.</p>
+  <p><strong>Body warning signs</strong> — shakiness, heavy sweating, racing heart, dizziness in days 1–4: eat, hydrate, and see a doctor same day. No plan outranks that.</p>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var DAYS = [
+    {d:20, dow:"Thu", streak:2, daughter:false,
+      focus:"Set up the sprint: weigh in, clear the house of alcohol, stock the fridge for the 12 meals. Deep work: give. app — run the Expo setup from your roadmap (steps 1–3).",
+      train:"AM fasted walk 45 min · PM gym — upper push + light core",
+      meal:"Grilled chicken thighs, charred bell peppers, rocket & olive-oil salad, 2 soft-boiled eggs", kcal:"~1,000 kcal",
+      eve:"Prep tomorrow's meal + film at home. Early night — days 2–3 are craving peak; be boring on purpose."},
+    {d:21, dow:"Fri", streak:3, daughter:true,
+      focus:"Weekend with her: Scientific Center — aquarium + IMAX, then early lunch together, ~11am — she picks hers, yours is the salmon plate (eat before you leave or order grilled fish there).",
+      train:"AM fasted walk 45 min before you head out · PM: the outing counts — 8k+ steps",
+      meal:"Baked salmon, spinach sautéed in butter, half avocado, lemon", kcal:"~950 kcal",
+      eve:"Guitar 20 min + call a friend — tell one person about the streak; accountability doubles the odds."},
+    {d:22, dow:"Sat", streak:4, daughter:false,
+      focus:"Deep work: draft Evidence-Driven Design posts #1–2 (hook / evidence / fix / lesson). Bank them, don't publish yet.",
+      train:"AM fasted jog-walk intervals 50 min · PM gym — lower body (squat pattern, hinge, carries)",
+      meal:"Bell-pepper & feta baked eggs (3 eggs) with grilled chicken strips", kcal:"~900 kcal",
+      eve:"Family time or long call with the cousins. Decide by noon."},
+    {d:23, dow:"Sun", streak:5, daughter:false,
+      focus:"Back-to-weekday rhythm. Deep work: give. app — tokens into constants/tokens.ts, first auth screen from the Figma export. Note how day 5 feels vs day 2.",
+      train:"AM fasted walk 60 min · PM gym — upper pull + arms",
+      meal:"Grilled hammour, grilled zucchini, light lemon-tahini drizzle", kcal:"~850 kcal",
+      eve:"Marinate tawook for tomorrow. Film or reading. Lights out early."},
+    {d:24, dow:"Mon", streak:6, daughter:false,
+      focus:"Deep work: chrismendes.io final polish — mobile pass, meta tags, share it with Chris. Close that loop.",
+      train:"AM fasted jog 45 min · PM gym — full-body circuit, moderate load",
+      meal:"Shish tawook skewers (no bread), grilled halloumi slice, cucumber-mint salad", kcal:"~1,000 kcal",
+      eve:"Guitar — first full run-through of the cover, however rough."},
+    {d:25, dow:"Tue", streak:7, daughter:true,
+      focus:"Afternoon out: ice skating at the Winter Games rink or trampoline park + bowling — her pick. One week sober tonight.",
+      train:"AM fasted walk 45 min · PM: the outing is the session",
+      meal:"Tuna & egg salad — olives, rocket, red pepper, olive oil", kcal:"~850 kcal",
+      eve:"Mark day 7 somewhere visible. Prep tomorrow. No screens after 10."},
+    {d:26, dow:"Wed", streak:8, daughter:false,
+      focus:"Deep work: give. app — navigation shell + tabs. Midpoint check: judge the scale trend, not today's number. ~89 means exactly on track.",
+      train:"AM fasted walk 60 min · PM gym — lower body, heavier than Saturday",
+      meal:"Roast chicken leg quarters, herbed cauliflower rice", kcal:"~1,000 kcal",
+      eve:"EDD post #1 goes live on LinkedIn. Reply to comments instead of scrolling."},
+    {d:27, dow:"Thu", streak:9, daughter:false,
+      focus:"Deep work: EDD posts #3–4 drafted, or a give. pitch one-pager — whichever has momentum.",
+      train:"AM fasted jog-walk 50 min · PM gym — upper push",
+      meal:"Garlic-butter prawns, charred broccoli, lemon", kcal:"~800 kcal",
+      eve:"Plan tomorrow with your daughter — she picks the menu for the weekend cook-together."},
+    {d:28, dow:"Fri", streak:10, daughter:true,
+      focus:"Weekend: cook together late morning — she runs her menu, you teach; the kofta lands as your 10–11am OMAD and her lunch. After 6:30pm: Marina Crescent walk when it dips below 40°.",
+      train:"AM fasted walk 45 min · PM: the evening walk with her counts",
+      meal:"Lean lamb kofta, grilled peppers, spoon of labneh (she gets the rice)", kcal:"~1,000 kcal",
+      eve:"Already sorted — the walk. Ten days sober."},
+    {d:29, dow:"Sat", streak:11, daughter:true,
+      focus:"The Avenues with her — wander, her lunch, a small end-of-summer treat before school routines return. You: sparkling water and good company.",
+      train:"AM fasted walk 45 min · PM: mall kilometres count — 10k+ steps",
+      meal:"Chicken Caesar-style salad — no croutons, parmesan, soft egg, anchovy dressing", kcal:"~900 kcal",
+      eve:"Guitar — record a rough take of the cover on your phone."},
+    {d:30, dow:"Sun", streak:12, daughter:false,
+      focus:"Deep work: give. app — one polished, demo-able flow end to end. The scale slows this week; do not answer it by cutting food. Execute the system.",
+      train:"AM fasted jog 45 min · PM gym — full body, last hard session",
+      meal:"Grilled sea bream, green beans with toasted almonds", kcal:"~850 kcal",
+      eve:"Write the back-to-work plan: what survives the sprint? Which habits keep running from 1 Sep?"},
+    {d:31, dow:"Mon", streak:13, daughter:false, finish:true,
+      focus:"Final weigh-in, same time as day 1. Score the OKR honestly: ticks first, kilos second. Light morning — walk, guitar, wrap up.",
+      train:"AM long fasted walk 60–75 min · PM: rest, stretch",
+      meal:"Finish-line mixed grill — chicken + prawns, big herb salad, grilled peppers", kcal:"~1,100 kcal",
+      eve:"Celebrate sober — play the recorded cover for your daughter. Thirteen days is proof of who runs the house."}
+  ];
+
+  var TICKS = [["sober","Sober"],["omad","OMAD"],["am","AM"],["pm","PM"],["plan","Plan set"]];
+  var KEY = "sprint_aug2026";
+
+  var canStore = false;
+  try { localStorage.setItem("__t","1"); localStorage.removeItem("__t"); canStore = true; } catch(e){}
+  var state = {};
+  if (canStore) { try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ state = {}; } }
+  if (!canStore) {
+    var n = document.getElementById("storeNote");
+    n.textContent = "Saving isn't available in this preview — download the file and open it in your own browser (Safari/Chrome) so ticks persist between days.";
+  }
+  function save(){ if(canStore){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} } }
+  function dayState(d){ if(!state[d]) state[d] = {}; return state[d]; }
+
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+  var container = document.getElementById("days");
+  var html = "";
+  DAYS.forEach(function(day){
+    var s = dayState(day.d);
+    html += '<div class="day'+(day.daughter?' daughter':'')+'" id="card'+day.d+'">'
+      + '<div class="day-head"><span class="datebox">'+day.dow+' '+day.d+' Aug</span>'
+      + '<span class="dow">Streak day '+day.streak+(day.finish?' · Finish line':'')+'</span>'
+      + (day.daughter?'<span class="tag">Daughter day</span>':'')
+      + '</div><dl class="rows">'
+      + '<dt>Focus</dt><dd>'+esc(day.focus)+'</dd>'
+      + '<dt>Train</dt><dd>'+esc(day.train)+'</dd>'
+      + '<dt>Meal</dt><dd class="meal">'+esc(day.meal)+' <span class="kcal">'+day.kcal+'</span></dd>'
+      + '<dt>Evening</dt><dd>'+esc(day.eve)+'</dd>'
+      + '</dl><div class="ticks">';
+    TICKS.forEach(function(t){
+      html += '<label class="tick"><input type="checkbox" data-day="'+day.d+'" data-k="'+t[0]+'"'+(s[t[0]]?' checked':'')+'><i></i>'+t[1]+'</label>';
+    });
+    if (day.daughter){
+      html += '<label class="tick special"><input type="checkbox" data-day="'+day.d+'" data-k="outing"'+(s.outing?' checked':'')+'><i></i>Outing done</label>';
+    }
+    html += '<span class="weightbox">Scale <input type="number" step="0.1" min="60" max="120" inputmode="decimal" placeholder="kg" data-day="'+day.d+'" data-k="weight" value="'+(s.weight!=null?s.weight:'')+'"></span>';
+    html += '</div>';
+    html += '<div class="pulls" id="pulls'+day.d+'"></div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+
+  function refresh(){
+    var sober=0, omad=0, sessions=0, outings=0, latestW=null;
+    DAYS.forEach(function(day){
+      var s = state[day.d] || {};
+      if (s.sober) sober++;
+      if (s.omad) omad++;
+      if (s.am) sessions++;
+      if (s.pm) sessions++;
+      if (s.outing) outings++;
+      if (s.weight != null && s.weight !== "" && !isNaN(s.weight)) latestW = parseFloat(s.weight);
+      var card = document.getElementById("card"+day.d);
+      var full = s.sober && s.omad && s.am && s.pm && s.plan;
+      if (card) card.classList.toggle("done", !!full);
+    });
+    var streak = sober + 1; // day 1 (19 Aug) banked
+    document.getElementById("kSober").innerHTML = streak + ' <small>/ 13 days</small>';
+    document.getElementById("kSoberSub").textContent = streak >= 13 ? "OKR closed. Committed KR: hit." : "Day 1 (19 Aug) banked · " + (13 - streak) + " to go";
+    document.getElementById("bSober").style.width = Math.min(streak/13*100,100) + "%";
+
+    var start = 92.5, target = 82.5;
+    var cur = latestW != null ? latestW : start;
+    var lost = Math.max(start - cur, 0);
+    document.getElementById("kWeight").innerHTML = cur.toFixed(1) + ' <small>kg</small>';
+    document.getElementById("kWeightSub").textContent = lost > 0
+      ? "−" + lost.toFixed(1) + " kg · " + (cur <= 87.5 ? "inside the win zone" : (87.5 - target === 0 ? "" : (cur - 87.5).toFixed(1) + " kg to the win zone (≤87.5)"))
+      : "Start 92.5 → target 82.5 · ≥87.5 = win";
+    document.getElementById("bWeight").style.width = Math.min(lost/10*100,100) + "%";
+
+    document.getElementById("kInputs").innerHTML = sessions + ' <small>sessions</small>';
+    document.getElementById("kInputsSub").textContent = "OMAD held " + omad + "/12 · target 10+ sessions";
+    document.getElementById("bInputs").style.width = Math.min(sessions/10*100,100) + "%";
+
+    document.getElementById("kDaughter").innerHTML = outings + ' <small>/ 4</small>';
+    document.getElementById("bDaughter").style.width = Math.min(outings/4*100,100) + "%";
+  }
+
+  container.addEventListener("change", function(e){
+    var el = e.target;
+    var d = el.getAttribute("data-day"), k = el.getAttribute("data-k");
+    if (!d || !k) return;
+    var s = dayState(d);
+    if (el.type === "checkbox") s[k] = el.checked;
+    else s[k] = el.value === "" ? null : parseFloat(el.value);
+    save(); refresh(); refreshMap();
+  });
+
+  var TRIGS = ["Boredom","Stress","Habit hour","Place","Social","Hunger","Fatigue","Low mood"];
+
+  function escAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+  function renderPulls(d){
+    var s = dayState(d), list = s.pulls || [], el = document.getElementById("pulls"+d);
+    if (!el) return;
+    var h = '<button class="pullbtn" data-day="'+d+'" data-act="add">+ Log a pull</button>';
+    list.forEach(function(p, idx){
+      h += '<div class="pull-entry">'
+        + '<input type="time" value="'+escAttr(p.t)+'" data-day="'+d+'" data-idx="'+idx+'" data-f="t">'
+        + '<span class="idots"><small>PULL</small>';
+      for (var i=1;i<=5;i++){
+        h += '<button class="idot'+((p.i||0)>=i?' on':'')+'" data-day="'+d+'" data-idx="'+idx+'" data-f="i" data-v="'+i+'" aria-label="intensity '+i+'"></button>';
+      }
+      h += '</span><span class="chips">';
+      TRIGS.forEach(function(t){
+        var on = (p.trig||[]).indexOf(t) >= 0;
+        h += '<button class="chip'+(on?' on':'')+'" data-day="'+d+'" data-idx="'+idx+'" data-f="trig" data-v="'+t+'">'+t+'</button>';
+      });
+      h += '</span>'
+        + '<input class="pnote" placeholder="What helped / context" value="'+escAttr(p.note)+'" data-day="'+d+'" data-idx="'+idx+'" data-f="note">'
+        + '<button class="pdel" data-day="'+d+'" data-idx="'+idx+'" data-act="del" aria-label="delete entry">✕</button>'
+        + '</div>';
+    });
+    el.innerHTML = h;
+  }
+  DAYS.forEach(function(day){ renderPulls(day.d); });
+
+  container.addEventListener("click", function(e){
+    var el = e.target.closest("button"); if (!el) return;
+    var d = el.getAttribute("data-day"); if (!d) return;
+    var act = el.getAttribute("data-act"), f = el.getAttribute("data-f");
+    var s = dayState(d); s.pulls = s.pulls || [];
+    if (act === "add"){
+      var now = new Date();
+      var hh = ("0"+now.getHours()).slice(-2)+":"+("0"+now.getMinutes()).slice(-2);
+      s.pulls.push({t:hh, i:0, trig:[], note:""});
+    } else if (act === "del"){
+      s.pulls.splice(+el.getAttribute("data-idx"), 1);
+    } else if (f === "i"){
+      s.pulls[+el.getAttribute("data-idx")].i = +el.getAttribute("data-v");
+    } else if (f === "trig"){
+      var p = s.pulls[+el.getAttribute("data-idx")]; p.trig = p.trig || [];
+      var v = el.getAttribute("data-v"), ix = p.trig.indexOf(v);
+      if (ix >= 0) p.trig.splice(ix,1); else p.trig.push(v);
+    } else return;
+    save(); renderPulls(d); refreshMap();
+  });
+
+  container.addEventListener("input", function(e){
+    var el = e.target, f = el.getAttribute("data-f");
+    if (!f || (f !== "t" && f !== "note")) return;
+    var d = el.getAttribute("data-day"), idx = +el.getAttribute("data-idx");
+    var s = dayState(d); if (!s.pulls || !s.pulls[idx]) return;
+    s.pulls[idx][f] = el.value;
+    save(); refreshMap();
+  });
+
+  function mapBars(obj, elId, order){
+    var el = document.getElementById(elId);
+    var keys = (order || Object.keys(obj)).filter(function(k){ return obj[k] > 0; });
+    if (!keys.length){ el.innerHTML = '<p class="mempty">Nothing logged yet.</p>'; return; }
+    if (!order) keys.sort(function(a,b){ return obj[b]-obj[a]; });
+    var max = Math.max.apply(null, keys.map(function(k){ return obj[k]; }));
+    el.innerHTML = keys.map(function(k){
+      return '<div class="mrow"><span class="mlbl">'+k+'</span><span class="mbar"><i style="width:'+(obj[k]/max*100)+'%"></i></span><span class="mn">'+obj[k]+'</span></div>';
+    }).join("");
+  }
+
+  var BAND_ORDER = ["Morning 6–12","Afternoon 12–5","Early eve 5–8","Late eve 8–12","Night 12–6"];
+  function refreshMap(){
+    var total=0, sum=0, rated=0, clean=0, trig={}, bands={};
+    BAND_ORDER.forEach(function(b){ bands[b]=0; });
+    DAYS.forEach(function(day){
+      var s = state[day.d] || {}, list = s.pulls || [];
+      if (s.sober && list.length === 0) clean++;
+      list.forEach(function(p){
+        total++;
+        if (p.i){ sum += p.i; rated++; }
+        (p.trig||[]).forEach(function(t){ trig[t]=(trig[t]||0)+1; });
+        if (p.t){
+          var h = parseInt(p.t.split(":")[0],10);
+          if (h>=6 && h<12) bands["Morning 6–12"]++;
+          else if (h>=12 && h<17) bands["Afternoon 12–5"]++;
+          else if (h>=17 && h<20) bands["Early eve 5–8"]++;
+          else if (h>=20) bands["Late eve 8–12"]++;
+          else bands["Night 12–6"]++;
+        }
+      });
+    });
+    document.getElementById("mTotal").textContent = total;
+    document.getElementById("mAvg").textContent = rated ? (sum/rated).toFixed(1) : "–";
+    document.getElementById("mClean").textContent = clean;
+    document.getElementById("mRode").textContent = total ? "100%" : "–";
+    mapBars(trig, "mTrig");
+    mapBars(bands, "mTime", BAND_ORDER);
+  }
+
+  refresh();
+  refreshMap();
+})();
+</script>
+</body>
+</html>
